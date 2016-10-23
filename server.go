@@ -20,6 +20,7 @@ package main
 import (
 	"fmt"
         "net/http"
+	"time"
 )
 
 //like hash table
@@ -30,20 +31,45 @@ type myHandler struct{}
 func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	var path string
 	path = r.URL.Path[1:]
+
+	//dispatch[path] => ponteiro for function, status(nil, true)
 	if h, ok := dispatch[path]; ok{
 		h(w, r)
 		return
 	}
 
+	//if not in dispatch
+
+	//status-line
+	w.WriteHeader(http.StatusOK)
+
+	//time, used to cache
+	current_time := time.Now().Local()
+	w.Header().Set("Date", current_time.Format("2016-10-23"))
+
+	//name server and content-type
+	w.Header().Set("Server", "Servidor-Cecilia")
+	w.Header().Set("Content-type", "text/html")
+	
 	fmt.Fprintf(w, "oi mundo")
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	r.Proto = "HTTP/1.0"
+
+	w.Header().Set("Proto", "HTTP/1.0")
+	w.WriteHeader(http.StatusOK)
+
+	//time, used to cache
+	current_time := time.Now().Local()
+	w.Header().Set("Date", current_time.Format("2016-10-23"))
+
+	//name server and content-type
+	w.Header().Set("Server", "Servidor-Cecilia")
+	w.Header().Set("Content-type", "text/html")
+	
 	fmt.Println("form", r.Form)
 	fmt.Println("scheme", r.URL.Scheme)
-	//w.Header().Set("HTTP/1.0 200 OK\n\n")
 	fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
 }
 
@@ -55,7 +81,8 @@ func main() {
 
 	dispatch = make(map[string]func(http.ResponseWriter, *http.Request))
 
-	dispatch["/cecilia"] = handler
+	dispatch["cecilia"] = handler
+	//dispatch["favicon.ico"] = handler
 
 	server.ListenAndServe()
 }
