@@ -40,12 +40,13 @@ func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 
 	//if not in dispatch
 
+	conn := w.Connection
 	//status-line
 	w.WriteHeader(http.StatusOK)
 
 	//time, used to cache
 	current_time := time.Now().Local()
-	w.Header().Set("Date", current_time.Format("2016-10-23"))
+	w.Header().Set("Date", current_time.Format(time.RFC1123))
 
 	//name server and content-type
 	w.Header().Set("Server", "Servidor-Cecilia")
