@@ -1,3 +1,27 @@
+HTTP-Server
+-------------------
+
+"A web server is a computer system that processes requests via HTTP, the basic network protocol used to distribute information on the World Wide Web. The term can refer to the entire system, or specifically to the software that accepts and supervises the HTTP requests."[1]
+
+GO Language
+--------------------
+
+"Go (often referred to as golang) is a free and open source programming language created at Google in 2007 by Robert Griesemer, Rob Pike, and Ken Thompson. It is a compiled, statically typed language in the tradition of Algol and C, with garbage collection, limited structural typing, memory safety features and CSP-style concurrent programming features added."[2]
+
+Use
+--------------------
+
+	$ go run server.go 
+
+Reference
+--------------------
+
+[1] https://en.wikipedia.org/wiki/Web_server
+[2] https://en.wikipedia.org/wiki/Go_(programming_language)
+
+Other Links
+--------------------
+
 http://thenewstack.io/building-a-web-server-in-go/
 
 https://tutorialedge.net/creating-a-simple-web-server-with-go-golang
