@@ -13,10 +13,31 @@ Use
 
 	$ go run server.go 
 
+Programs
+-------------------
+
+Statics - Files
+
+	- index.html
+	- somar.html
+	- texto.html
+
+Server
+
+	- server.go
+
+Function
+-------------------
+
+- Adder two numbers: adder, show an error line if the arguments are invalids (200)
+- Moved Permanently: redirect to URL-Location (404)
+- Text in different languages: show "hello World" in portuguese, france or english using "Accept-Language" field of header (200)
+
 Reference
 --------------------
 
 [1] https://en.wikipedia.org/wiki/Web_server
+
 [2] https://en.wikipedia.org/wiki/Go_(programming_language)
 
 Other Links
