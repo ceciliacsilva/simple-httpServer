@@ -18,11 +18,11 @@
 package main
 
 import (
-	"fmt"
         "net/http"
 	"time"
 	"html/template"
 	"strconv"
+	"regexp"
 )
 
 //show files
@@ -37,6 +37,12 @@ type Add_result struct {
 	Error  string
 }
 
+type text_pag struct{
+	Title  string
+	Enc    string
+	Text   string
+	Button string
+}
 
 func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	var path string
@@ -50,9 +56,6 @@ func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 
 	//if not in dispatch
 
-	//status-line
-	w.WriteHeader(http.StatusOK)
-
 	//time, used to cache
 	current_time := time.Now().Local()
 	w.Header().Set("Date", current_time.Format(time.RFC1123))
@@ -61,7 +64,12 @@ func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Server", "Servidor-Cecilia")
 	w.Header().Set("Content-type", "text/html")
 	
-	fmt.Fprintf(w, "oi mundo")
+	//status-line
+	w.WriteHeader(http.StatusOK)
+
+	t, _ := template.ParseFiles("static/index.html")
+
+	t.Execute(w, nil)
 }
 
 func adder(w http.ResponseWriter, r *http.Request){
@@ -77,7 +85,7 @@ func adder(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-type", "text/html")
 	w.WriteHeader(http.StatusOK)
 	
-	t, _ := template.ParseFiles("static/index.html")
+	t, _ := template.ParseFiles("static/somar.html")
 	
 	if r.Method == "GET"{
 				
@@ -121,10 +129,28 @@ func texto(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Server", "Servidor-Cecilia")
 	w.Header().Set("Content-type", "text/html")
 	
-	fmt.Println("form", r.Form)
-	fmt.Println("scheme", r.URL.Scheme)
-
 	w.WriteHeader(http.StatusOK)
+
+	t, _ := template.ParseFiles("static/texto.html")
+
+	france      := text_pag{Title: "Texte", Enc: "fr-FR", Text: "Salut!", Button: "Retour"}
+	english     := text_pag{Title: "Text", Enc: "en-US", Text: "Hello World!", Button: "Back"}
+	portuguese  := text_pag{Title: "Texto", Enc: "pt-BR", Text: "Oi mundo!", Button: "Voltar"}
+		
+	accept_lang := r.Header.Get("Accept-Language")
+	re          := regexp.MustCompile("[a-z]*-[A-Z]*")
+	lang        := re.FindAllString(accept_lang, -1)
+
+	if len(lang) >= 1{
+		language := lang[0]
+		if language == "fr-FR"{
+			t.Execute(w, france)
+		} else if language == "pt-BR" {
+			t.Execute(w, portuguese)
+		} else {
+			t.Execute(w, english)
+		}
+	}
 }
 
 func main() {

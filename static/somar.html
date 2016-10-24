@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+  <head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <title>Somar</title>
+  </head>
+  <body>
+    <center>
+      <h2>Somar</h2>
+      <form>
+	Primeiro Número: <input type="text" name="num1"/><br/><br/>
+	Segundo Número: <input type="text" name="num2"/><br/><br/>
+	<input type="submit" name="bot" value="Enter"/>
+      </form>
+      <br/><br/>
+      <h2>Soma:</h2>
+      {{.Soma}}
+      <br/>
+      <h2>Error:</h2>
+      {{.Error}}
+      <br/><br/>
+      <a href="/">
+	<button>
+	  Voltar
+	</button>
+      </a>
+    </center>
+  </body>
+</html>

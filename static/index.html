@@ -2,22 +2,29 @@
 
 <html>
   <head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <title>Somar</title>
+    <title>Redes</title>
+    <style>
+      .footer {
+      position:absolute;
+      bottom:0;
+      width:100%;
+      color: grey;
+    </style>
   </head>
   <body>
     <center>
-      <h2>Somar</h2>
-      <form>
-	Primeiro Número: <input type="text" name="num1"/><br/><br/>
-	Segundo Número: <input type="text" name="num2"/><br/><br/>
-	<input type="submit" name="bot" value="Enter"/>
-      </form>
+      <h1>Simple HTTP-Server</h1>
+      <a href="/somar">
+	<button>Somar</button>
+      </a>
       <br/><br/>
-      <h2>Soma:</h2>
-      {{.Soma}}
-      <br/>
-      <h2>Error:</h2>
-      {{.Error}}
+      <a href="/movido">
+	<button>LRC</button>
+      </a>
+      <br/><br/>
+      <a href="/texto">
+	<button>Texto</button>
+      </a>
     </center>
   </body>
 </html>
