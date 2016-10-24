@@ -25,9 +25,6 @@ import (
 	"regexp"
 )
 
-//show files
-//http.ServeFile(w, r, "static/index.html") 
-
 //like hash table
 var dispatch map[string]func(http.ResponseWriter, *http.Request)
 
@@ -167,3 +164,6 @@ func main() {
 	
 	server.ListenAndServe()
 }
+
+//show files
+//http.ServeFile(w, r, "static/index.html") 
