@@ -133,9 +133,9 @@ func texto(w http.ResponseWriter, r *http.Request){
 
 	t, _ := template.ParseFiles("static/texto.html")
 
-	france      := text_pag{Title: "Texte", Enc: "fr-FR", Text: "Salut!",       Button: "Retour"}
-	english     := text_pag{Title: "Text",  Enc: "en-US", Text: "Hello World!", Button: "Back"}
-	portuguese  := text_pag{Title: "Texto", Enc: "pt-BR", Text: "Oi mundo!",    Button: "Voltar"}
+	france      := text_pag{Title: "Texte", Enc: "fr-FR", Text: "Bonjour le monde!", Button: "Retour"}
+	english     := text_pag{Title: "Text",  Enc: "en-US", Text: "Hello World!",      Button: "Back"}
+	portuguese  := text_pag{Title: "Texto", Enc: "pt-BR", Text: "Oi mundo!",         Button: "Voltar"}
 		
 	accept_lang := r.Header.Get("Accept-Language")
 	re          := regexp.MustCompile("[a-z]*-[A-Z]*")
