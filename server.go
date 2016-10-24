@@ -32,6 +32,11 @@ import (
 var dispatch map[string]func(http.ResponseWriter, *http.Request)
 
 type myHandler struct{}
+type Add_result struct {
+	Soma   float64
+	Error  string
+}
+
 
 func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	var path string
@@ -60,6 +65,8 @@ func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 }
 
 func adder(w http.ResponseWriter, r *http.Request){
+	var soma  float64 = 0.0
+	var error string  = " " 
 	r.ParseForm()
 	
 	w.WriteHeader(http.StatusOK)
@@ -72,22 +79,25 @@ func adder(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-type", "text/html")
 
 	t, _ := template.ParseFiles("static/index.html")
-	t.Execute(w, nil)
-
+	
 	if r.Method == "GET"{
 				
 		num1s := r.Form["num1"]
 		num2s := r.Form["num2"]
 		if len(num1s)==1 && len(num2s) ==1 {
-			num1, err1 := strconv.ParseInt(num1s[0], 10, 32)
-			num2, err2 := strconv.ParseInt(num2s[0], 10, 32)
+			num1, err1 := strconv.ParseFloat(num1s[0], 64)
+			num2, err2 := strconv.ParseFloat(num2s[0], 64)
 
 			if err1 == nil && err2 == nil{
-				fmt.Println(num1)
-				fmt.Println(num2)
+				soma = num1 + num2
+			} else {
+				error = "Argumento(s) inválidos"
 			}
 		}
 	}
+	
+	a := Add_result{Soma: soma, Error: error}
+	t.Execute(w, a)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
