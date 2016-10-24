@@ -21,7 +21,12 @@ import (
 	"fmt"
         "net/http"
 	"time"
+	"html/template"
+	"strconv"
 )
+
+//show files
+//http.ServeFile(w, r, "static/index.html") 
 
 //like hash table
 var dispatch map[string]func(http.ResponseWriter, *http.Request)
@@ -40,7 +45,6 @@ func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 
 	//if not in dispatch
 
-	conn := w.Connection
 	//status-line
 	w.WriteHeader(http.StatusOK)
 
@@ -55,15 +59,45 @@ func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	fmt.Fprintf(w, "oi mundo")
 }
 
+func adder(w http.ResponseWriter, r *http.Request){
+	r.ParseForm()
+	
+	w.WriteHeader(http.StatusOK)
+
+	//time
+	current_time := time.Now().Local()
+	w.Header().Set("Date", current_time.Format(time.RFC1123))
+
+	w.Header().Set("Server", "Servidor_Cecilia")
+	w.Header().Set("Content-type", "text/html")
+
+	t, _ := template.ParseFiles("static/index.html")
+	t.Execute(w, nil)
+
+	if r.Method == "GET"{
+				
+		num1s := r.Form["num1"]
+		num2s := r.Form["num2"]
+		if len(num1s)==1 && len(num2s) ==1 {
+			num1, err1 := strconv.ParseInt(num1s[0], 10, 32)
+			num2, err2 := strconv.ParseInt(num2s[0], 10, 32)
+
+			if err1 == nil && err2 == nil{
+				fmt.Println(num1)
+				fmt.Println(num2)
+			}
+		}
+	}
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
-	w.Header().Set("Proto", "HTTP/1.0")
 	w.WriteHeader(http.StatusOK)
 
 	//time, used to cache
 	current_time := time.Now().Local()
-	w.Header().Set("Date", current_time.Format("2016-10-23"))
+	w.Header().Set("Date", current_time.Format(time.RFC1123))
 
 	//name server and content-type
 	w.Header().Set("Server", "Servidor-Cecilia")
@@ -83,7 +117,7 @@ func main() {
 	dispatch = make(map[string]func(http.ResponseWriter, *http.Request))
 
 	dispatch["cecilia"] = handler
-	//dispatch["favicon.ico"] = handler
+	dispatch["somar"]   = adder
 
 	server.ListenAndServe()
 }
