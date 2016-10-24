@@ -69,15 +69,14 @@ func adder(w http.ResponseWriter, r *http.Request){
 	var error string  = " " 
 	r.ParseForm()
 	
-	w.WriteHeader(http.StatusOK)
-
 	//time
 	current_time := time.Now().Local()
 	w.Header().Set("Date", current_time.Format(time.RFC1123))
 
 	w.Header().Set("Server", "Servidor_Cecilia")
 	w.Header().Set("Content-type", "text/html")
-
+	w.WriteHeader(http.StatusOK)
+	
 	t, _ := template.ParseFiles("static/index.html")
 	
 	if r.Method == "GET"{
@@ -100,12 +99,21 @@ func adder(w http.ResponseWriter, r *http.Request){
 	t.Execute(w, a)
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
+func moved(w http.ResponseWriter, r *http.Request){
+	
+	current_time := time.Now().Local()
+	w.Header().Set("Date", current_time.Format(time.RFC1123))
 
-	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Server", "Servidor_Cecilia")
+	w.Header().Set("Content-type", "text/html")
 
-	//time, used to cache
+	//location moved
+	w.Header().Set("Location", "http://www.lrc.eletrica.ufu.br/redes/")
+
+	w.WriteHeader(http.StatusMovedPermanently)
+}
+
+func texto(w http.ResponseWriter, r *http.Request){
 	current_time := time.Now().Local()
 	w.Header().Set("Date", current_time.Format(time.RFC1123))
 
@@ -115,7 +123,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	
 	fmt.Println("form", r.Form)
 	fmt.Println("scheme", r.URL.Scheme)
-	fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func main() {
@@ -126,8 +135,9 @@ func main() {
 
 	dispatch = make(map[string]func(http.ResponseWriter, *http.Request))
 
-	dispatch["cecilia"] = handler
 	dispatch["somar"]   = adder
-
+	dispatch["movido"]  = moved
+	dispatch["texto"]   = texto
+	
 	server.ListenAndServe()
 }
