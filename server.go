@@ -23,6 +23,7 @@ import (
 	"html/template"
 	"strconv"
 	"regexp"
+	"log"
 )
 
 //like hash table
@@ -113,7 +114,7 @@ func moved(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-type", "text/html")
 
 	//location moved
-	w.Header().Set("Location", "http://www.lrc.eletrica.ufu.br/redes/")
+	w.Header().Set("Location", "http://www.lrc.eletrica.ufu.br/")
 
 	w.WriteHeader(http.StatusMovedPermanently)
 }
@@ -162,7 +163,11 @@ func main() {
 	dispatch["movido"]  = moved
 	dispatch["texto"]   = texto
 	
-	server.ListenAndServe()
+	err := server.ListenAndServe()
+
+	if err!=nil{
+		log.Fatal("ListenAndServe: ", err)
+	}
 }
 
 //show files
