@@ -158,7 +158,7 @@ func main() {
 	}
 
 	dispatch = make(map[string]func(http.ResponseWriter, *http.Request))
-
+	
 	dispatch["somar"]   = adder
 	dispatch["movido"]  = moved
 	dispatch["texto"]   = texto

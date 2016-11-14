@@ -11,7 +11,12 @@ GO Language
 Use
 --------------------
 
-	$ go run server.go 
+	$ go run server.go
+
+Open a browser:
+
+        http://localhost:8080/
+
 
 Programs
 -------------------
